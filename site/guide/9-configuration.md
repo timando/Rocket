@@ -185,7 +185,7 @@ assets_dir = "prod_assets/"
 The following code will:
 
   1. Read the configuration parameter in an ad-hoc `attach` fairing.
-  2. Store the parsed parameter in an `AssertsDir` structure in managed state.
+  2. Store the parsed parameter in an `AssetsDir` structure in managed state.
   3. Retrieve the parameter in an `assets` route via the `State` guard.
 
 ```rust
@@ -299,7 +299,7 @@ dependency in your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-rocket = { version = "0.4.4", features = ["tls"] }
+rocket = { version = "0.4.5", features = ["tls"] }
 ```
 
 TLS is configured through the `tls` configuration parameter. The value of `tls`
