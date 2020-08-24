@@ -416,6 +416,9 @@ use self::r2d2::ManageConnection;
 #[cfg(feature = "postgres_pool")] pub extern crate postgres;
 #[cfg(feature = "postgres_pool")] pub extern crate r2d2_postgres;
 
+#[cfg(feature = "postgres_0_17_pool")] pub extern crate postgres_0_17;
+#[cfg(feature = "postgres_0_17_pool")] pub extern crate r2d2_postgres_0_17;
+
 #[cfg(feature = "mysql_pool")] pub extern crate mysql;
 #[cfg(feature = "mysql_pool")] pub extern crate r2d2_mysql;
 
@@ -769,6 +772,19 @@ impl Poolable for postgres::Connection {
     }
 }
 
+// TODO: Come up with a way to handle TLS
+#[cfg(feature = "postgres_0_17_pool")]
+impl Poolable for postgres_0_17::Client {
+    type Manager = r2d2_postgres_0_17::PostgresConnectionManager<postgres_0_17::NoTls>;
+    type Error = DbError<postgres_0_17::Error>;
+
+    fn pool(config: DatabaseConfig) -> Result<r2d2::Pool<Self::Manager>, Self::Error> {
+        let manager = r2d2_postgres_0_17::PostgresConnectionManager::new(config.url.parse().unwrap(), postgres_0_17::NoTls);
+
+        r2d2::Pool::builder().max_size(config.pool_size).build(manager)
+            .map_err(DbError::PoolError)
+    }
+}
 #[cfg(feature = "mysql_pool")]
 impl Poolable for mysql::Conn {
     type Manager = r2d2_mysql::MysqlConnectionManager;
