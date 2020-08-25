@@ -1,7 +1,7 @@
 #![feature(crate_visibility_modifier)]
 #![feature(never_type)]
 #![feature(doc_cfg)]
-
+#![allow(warnings)]
 #![doc(html_root_url = "https://api.rocket.rs/v0.4")]
 #![doc(html_favicon_url = "https://rocket.rs/v0.4/images/favicon.ico")]
 #![doc(html_logo_url = "https://rocket.rs/v0.4/images/logo-boxed.png")]
@@ -48,7 +48,7 @@
 #[cfg(feature="serve")] pub mod serve;
 #[cfg(feature="msgpack")] pub mod msgpack;
 #[cfg(feature="templates")] pub mod templates;
-#[cfg(feature="uuid")] pub mod uuid;
+#[cfg(any(feature="uuid", feature="uuid_08"))] pub mod uuid;
 #[cfg(feature="databases")] pub mod databases;
 #[cfg(feature = "helmet")] pub mod helmet;
 
