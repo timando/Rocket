@@ -289,7 +289,24 @@ impl PartialEq<uuid_08::Uuid> for Uuid08 {
         self.0.eq(other)
     }
 }
-
+#[cfg(all(feature="serde", feature="uuid_08/serde"))]
+impl serde::Serialize for Uuid08{
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serde::Serialize::serialize(&self.0, serializer)
+    }
+}
+#[cfg(all(feature="serde", feature="uuid_08/serde"))]
+impl serde::Deserialize for Uuid08{
+    fn deserialize<D>(&self, serializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer,
+    {
+        Ok(Self(serde::Deserialize::deserialize(&self.0, deserializer)?))
+    }
+}
 #[cfg(test)]
 mod test {
     use super::uuid_crate;
